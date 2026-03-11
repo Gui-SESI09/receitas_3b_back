@@ -6,18 +6,20 @@ POST http://localhost:3000/filmes
 Content-Type: application/json
 
 {
- "titulo": "Gremlins",
+ "titulo": "Pixels",
+ "genero": "Jogos",
+ "ano_lancamento": "2015",
+ "diretor": "Chris Columbus"
+}
+###
+PUT http://localhost:3000/filmes/2
+Content-Type: application/json
+
+{
+  "titulo": "Gremleeeeins",
  "genero": "Comédia",
  "ano_lancamento": "1984",
  "diretor": "Joe Dante"
 }
 ###
-PUT http://localhost:3000/filmes/
-Content-Type: application/json
-
-{
- "nome": "Marcos",
- "senha": "leaf green"
-}
-###
-DELETE http://localhost:3000/filmes/
+DELETE http://localhost:3000/filmes/1

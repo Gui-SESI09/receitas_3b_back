@@ -9,15 +9,15 @@ const sql = new Pool({
  database: "cinema_db" // Certifique-se que o banco no pgAdmin tem este nome
 })
 const servidor = Fastify()
-// --- ROTAS DE USUÁRIOS ---    
+// --- ROTAS DE FILME ---    
 
-// Listar todos os usuários
+// Listar todos os filmes
 servidor.get('/filmes', async (request, reply) => {
  const resultado = await sql.query('SELECT * FROM filmes')
  return resultado.rows
 })
 
-// Criar novo usuário
+// Criar novo filme
 servidor.post('/filmes', async (request, reply) => {
  const { titulo, genero, ano_lancamento, diretor} = request.body;
  if (!titulo || !genero || !ano_lancamento || !diretor) {
@@ -27,11 +27,11 @@ servidor.post('/filmes', async (request, reply) => {
  return reply.status(201).send({ mensagem: "Filme cadastrado no catálogo!" })
 })
 
-// Editar usuário existente
+// Editar filme existente
 servidor.put('/filmes/:id', async (request, reply) => {
  const { id } = request.params
  const { titulo, genero, ano_lancamento, diretor } = request.body
- if (!nome || !senha) {
+ if (!titulo || !genero || !ano_lancamento || !diretor) {
  return reply.status(400).send({ error: 'Algum dos dados são inválidos!' })
  }
  const busca = await sql.query('SELECT * FROM filmes WHERE id = $1', [id])
@@ -39,15 +39,15 @@ servidor.put('/filmes/:id', async (request, reply) => {
  if (busca.rows.length === 0) {
  return reply.status(404).send({ error: 'Filme não encontrado!' })
  }
- await sql.query('UPDATE usuario SET titulo = $1, genero = $2, ano_lancamento = $3, diretor = $4 WHERE id = $5', [titulo, genero, ano_lancamento, diretor, id])
+ await sql.query('UPDATE filmes SET titulo = $1, genero = $2, ano_lancamento = $3, diretor = $4 WHERE id = $5', [titulo, genero, ano_lancamento, diretor, id])
  return { mensagem: 'Filme alterado com sucesso!' }
 })
 
-// Deletar usuário
+// Deletar filme
 servidor.delete('/filmes/:id', async (request, reply) => {
  const { id } = request.params
  await sql.query('DELETE FROM filmes WHERE id = $1', [id])
- return reply.status(204).send()
+ return reply.status(204).send({ mensagem: 'Filme deletado com sucesso!' })
 })
 
 // --- O ALUNO DEVE CRIAR AS ROTAS DE /FILMES ABAIXO ---
