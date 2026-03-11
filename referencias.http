@@ -1,0 +1,21 @@
+###
+GET http://localhost:3000/usuarios
+
+###
+POST http://localhost:3000/usuarios
+Content-Type: application/json
+
+{
+ "nome": "Vinicius",
+ "senha": "12345"
+}
+###
+PUT http://localhost:3000/usuarios/
+Content-Type: application/json
+
+{
+ "nome": "Marcos",
+ "senha": "leaf green"
+}
+###
+DELETE http://localhost:3000/usuarios/
