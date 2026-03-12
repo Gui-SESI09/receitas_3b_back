@@ -27,3 +27,13 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:3000/usuarios/2
+
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "guilherme18@estudante.com",
+    "senha": "12345"
+}

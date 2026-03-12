@@ -11,13 +11,17 @@ const sql = new Pool({
 
 const servidor = Fastify();
 
-servidor.post('/login', async (request, reply) => )
+servidor.post('/login', async (request, reply) => {
     const body = request.body;
     if (!body || !body.email || !body.senha) {
         reply.status(400).send({error: "email e senha obrigatórios!"})
     }
 
     const resultado = await sql.query('select * from usuario where email = $1 AND senha = $2', [body.email, body.senha])
+    if (resultado.rows.length === 0){
+        reply.status(401).send({message: "Usuário"})
+    }  
+})
 
 
 servidor.get('/usuarios', async () => {
