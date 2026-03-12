@@ -2,52 +2,65 @@ import Fastify from 'fastify'
 import { Pool } from 'pg'
 
 const sql = new Pool({
- user: "postgres",
- password: "senai",
- host: "localhost",
- port: 5432,
- database: "cinema_db" 
-})
-const servidor = Fastify()
-
-servidor.get('/filmes', async (request, reply) => {
- const resultado = await sql.query('SELECT * FROM filmes')
- return resultado.rows
+    user: "postgres",
+    password: "senai",
+    host: "localhost",
+    port: 5432,
+    database: "receitas"
 })
 
-servidor.post('/filmes', async (request, reply) => {
- const { titulo, genero, ano_lancamento, diretor} = request.body;
- if (!titulo || !genero || !ano_lancamento || !diretor) {
- return reply.status(400).send({ error: 'Algum dos dados são Inválidos!' })
- }
- await sql.query('INSERT INTO filmes (titulo, genero, ano_lancamento, diretor) VALUES ($1, $2, $3, $4)', [titulo, genero, ano_lancamento, diretor])
- return reply.status(201).send({ mensagem: "Filme cadastrado no catálogo!" })
+const servidor = Fastify();
+
+servidor.get('/usuarios', async () => {
+    const resultado = await sql.query('select * from usuario')
+    return resultado.rows
 })
 
-servidor.put('/filmes/:id', async (request, reply) => {
- const { id } = request.params
- const { titulo, genero, ano_lancamento, diretor } = request.body
- if (!titulo || !genero || !ano_lancamento || !diretor) {
- return reply.status(400).send({ error: 'Algum dos dados são inválidos!' })
- }
- const busca = await sql.query('SELECT * FROM filmes WHERE id = $1', [id])
+servidor.post('/usuarios', async (request, reply) => {
+    const body = request.body;
 
- if (busca.rows.length === 0) {
- return reply.status(404).send({ error: 'Filme não encontrado!' })
- }
- await sql.query('UPDATE filmes SET titulo = $1, genero = $2, ano_lancamento = $3, diretor = $4 WHERE id = $5', [titulo, genero, ano_lancamento, diretor, id])
- return { mensagem: 'Filme alterado com sucesso!' }
+    if (!body || !body.nome || !body.senha || !body.email) {
+        return reply.status(400).send({
+            message:"nome, email e senha são obrigatórios!"
+        })
+    }
+
+    const resultado = await sql.query('INSERT INTO usuario (nome, senha, email) VALUES ($1, $2, $3)', [body.nome, body.senha, body.email])          
+    reply.status(201).send({message: 'Usuário Criado!'})
 })
 
-servidor.delete('/filmes/:id', async (request, reply) => {
- const { id } = request.params
- await sql.query('DELETE FROM filmes WHERE id = $1', [id])
- return reply.status(204).send({ mensagem: 'Filme deletado com sucesso!' })
+servidor.put('/usuarios/:id', async (request, reply) => {
+    const body = request.body;
+    const id = request.params.id;
+
+    if (!body || !body.nome || !body.senha || !body.email) {
+        return reply.status(400).send({
+            message: "nome, email e senha são obrigatórios!"
+        })
+    } else if (!id) {
+        return reply.status(400).send({
+            message: "Faltou o ID!"
+        })
+    }
+
+    const usuario = await sql.query('select * from usuario where id = $1', [id])  
+    if (usuario.rows.length === 0) {
+        return reply.status(400).send({
+            message: "Usuário não existe!"
+        })
+    }
+
+    const resultado = await sql.query('UPDATE usuario SET nome = $1, senha = $2, email = $3 WHERE id = $4', [body.nome, body.senha, body.email, id])      
+    reply.status(201).send({message: `usuario${body.nome} alterado`})       
 })
 
+servidor.delete('/usuarios/:id', async (request, reply) => {
+    const id = request.params.id
+    const resultado = await sql.query('DELETE FROM usuario where id = $1', [id]) 
+    console.log(resultado);    
+    reply.status(200).send({message:'Usuário Deletado!'})
+})
 
-servidor.listen({
- port: 3000
-}).then(() => {
- console.log("Servidor rodando em http://localhost:3000")
+servidor.listen({   
+    port: 3000
 })

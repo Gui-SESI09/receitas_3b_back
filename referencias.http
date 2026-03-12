@@ -1,25 +1,29 @@
 ###
-GET http://localhost:3000/filmes
+
+GET http://localhost:3000/usuarios
 
 ###
-POST http://localhost:3000/filmes
+
+POST http://localhost:3000/usuarios
 Content-Type: application/json
 
 {
- "titulo": "Pixels",
- "genero": "Jogos",
- "ano_lancamento": "2015",
- "diretor": "Chris Columbus"
+    "nome": "Guilherme",
+    "senha": "12345",
+    "email": "guilherme18@estudante.com"
 }
+
 ###
-PUT http://localhost:3000/filmes/2
+
+PUT http://localhost:3000/usuarios/2
 Content-Type: application/json
 
 {
-  "titulo": "Gremleeeeins",
- "genero": "Comédia",
- "ano_lancamento": "1984",
- "diretor": "Joe Dante"
+    "nome": "Carlos",
+    "email": "guilherme18@estudante.com",
+    "senha": "12345"
 }
+
 ###
-DELETE http://localhost:3000/filmes/1
+
+DELETE http://localhost:3000/usuarios/2
