@@ -20,7 +20,7 @@ servidor.post('/login', async (request, reply) => {
     const resultado = await sql.query('select * from usuario where email = $1 AND senha = $2', [body.email, body.senha])
     if (resultado.rows.length === 0){
         reply.status(401).send({message: "Usuário ou senha inválidos!", login: false})
-    }  else if (resultado.rows.lenght === 1) {
+    }  else if (resultado.rows.length === 1) {
         reply.status(200).send({message: "Usuário Logado", login: true})
     }
 })
