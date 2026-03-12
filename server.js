@@ -25,7 +25,7 @@ servidor.post('/usuarios', async (request, reply) => {
         })
     }
 
-    const resultado = await sql.query('INSERT INTO usuario (nome, senha, email) VALUES ($1, $2, $3)', [body.nome, body.senha, body.email])          
+    const resultado = await sql.query('INSERT INTO usuario (nome, senha) VALUES ($1, $2)', [body.nome, body.senha])          
     reply.status(201).send({message: 'Usuário Criado!'})
 })
 
@@ -50,8 +50,8 @@ servidor.put('/usuarios/:id', async (request, reply) => {
         })
     }
 
-    const resultado = await sql.query('UPDATE usuario SET nome = $1, senha = $2, email = $3 WHERE id = $4', [body.nome, body.senha, body.email, id])      
-    reply.status(201).send({message: `usuario${body.nome} alterado`})       
+    const resultado = await sql.query('UPDATE usuario SET nome = $1, senha = $2 WHERE id = $3', [body.nome, body.senha, id])      
+    return 'Usuário Alterado!'             
 })
 
 servidor.delete('/usuarios/:id', async (request, reply) => {
