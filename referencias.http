@@ -1,0 +1,64 @@
+###
+
+GET http://localhost:3000/usuarios
+
+###
+
+POST http://localhost:3000/usuarios
+Content-Type: application/json
+
+{
+    "nome": "Marcos Vinicius Silva Coelho",
+    "senha": "12345",
+    "email": "marcos@gmail.com"
+}
+
+###
+
+PUT http://localhost:3000/usuarios/1
+Content-Type: application/json
+
+{
+    "nome": "alexandre",
+    "email": "marquinhoLindo@gmail.com",
+    "senha": "12345"
+}
+
+###
+
+DELETE http://localhost:3000/usuarios/2
+
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "senha": "12345",
+    "email": "marcos@gmail.com"
+}
+
+###
+
+GET http://localhost:3000/receitas
+
+###
+
+POST http://localhost:3000/receitas
+Content-Type: application/json
+
+{
+    "nome": "Bolo de Chocolate",
+    "ingredientes": "Ovo, CHocolate",
+    "instrucoes": "Tomara que dê certo",
+    "tempo_preparo_minutos": "30",
+    "usuario_id": "1"
+}
+
+###
+
+PUT http://localhost:3000/receitas/1
+
+###
+
+DELETE http://localhost:3000/receitas/

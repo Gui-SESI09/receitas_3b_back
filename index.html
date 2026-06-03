@@ -1,0 +1,57 @@
+<h1>Aprendendo FETCH</h1>
+<button onclick="renderizarUsuarios()">Buscar</button>
+<br>
+
+<input type="text" id="nome" placeholder="Digite seu nome">
+<input type="text" id="email" placeholder="Digite seu email">
+<input type="text" id="senha" placeholder="Digite sua senha">
+
+<button onclick="cadastrarUsuario()">SALVAR</button>
+
+<br>
+<br>
+
+<div id="listar-usuarios"></div>
+
+<script>
+    async function buscarUsuarios() {
+        const usuarios = await fetch('http://localhost:3000/usuarios');
+        const resultado = await usuarios.json();
+        console.log(resultado);
+        return resultado;
+    }
+
+    async function renderizarUsuarios() {
+        const usuarios = await buscarUsuarios();
+        const div = document.getElementById('listar-usuarios')
+
+        usuarios.forEach(usuario => {
+            const card = document.createElement('div');
+            card.style.border = '1px solid #ccc'
+
+            card.innerHTML = `<h1>${usuario.nome}</h1>`
+            div.appendChild(card)
+        })
+
+    }
+
+    renderizarUsuarios();
+
+    async function cadastrarUsuario() {
+        const nome = document.getElementById('nome').value;
+        const email = document.getElementById('email').value;
+        const senha = document.getElementById('senha').value;
+
+        if (!nome || !senha || !email) {
+            alert("preencha todas as informações!")
+            return
+        }
+
+        await fetch('http://localhost:3000/usuarios', {
+            method: "POST",
+            body: JSON.stringify({nome, email, senha}),
+            headers: {"Content-Type": "application/json"}
+        })
+    }
+
+</script>
